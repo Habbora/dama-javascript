@@ -1,5 +1,10 @@
 body {
-    margin: auto; width: 90%;
+    height: 90%;
+    width: 90%;
+    margin: auto;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
 }
 
 table {
