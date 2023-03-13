@@ -50,7 +50,7 @@ function update(socket) {
 
 let startSocket = function() {
     playerId = null;
-    const ws = new WebSocket('ws://179.182.210.109:8080');
+    const ws = new WebSocket('ws://179.182.211.76:8080');
 
     ws.addEventListener("open", event => {
         console.log('open');
