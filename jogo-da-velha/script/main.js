@@ -71,7 +71,7 @@ function conectarTabuleiro() {
 
 let startSocket = function() {
     gameId = null;
-    const ws = new WebSocket('ws://jogo-da-velha-server.habbora.com.br:8080');
+    const ws = new WebSocket('ws://ip.habbora.com.br:8080');
 
     ws.addEventListener("open", event => {
         console.log('open');
