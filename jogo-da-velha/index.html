@@ -9,9 +9,16 @@
 </head>
 <body>
     <div id="screen">
+        <div class="box">
+            GAME ID: <input id="gameId" type="number">
+            <br>
+            <button onclick="criarTabuleiro()">Criar Tabuleiro</button>
+            <button onclick="conectarTabuleiro()">Conectar Tabuleiro</button>
+            <br>
+            <button onclick="reset()">Reset Tabuleiro</button>
+        </div>
         <div id="header">Servidor desconectado</div>
         <div id="display"></div>
-        <button onclick="reset()">Reset Tabuleiro</button>
         <script src='script/main.js'></script>
     </div>
 </body>

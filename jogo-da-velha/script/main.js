@@ -1,56 +1,77 @@
-const tabuleiroWidth = 3
-const tabuleiroHeight = 3
-let currentWebSocket = null;
-let tabuleiroArray = []
+var gameId = null
+let currentWebSocket = null
 let connected = false
+let newGame = false
 
-function start() {
-    startSocket()
-    console.log("Start")
-    setInterval(() => update(currentWebSocket), 1000);
-}
-
-function reset() {
-    currentWebSocket.send(JSON.stringify({emit: 'reset'}));
-}
-
-function tabuleiroRender() {
-    const debug = false
+function tabuleiroRender(array, width, height) {
     let html = `<table cellpadding=0 cellspacing=0`
-    for (let column = 0; column < tabuleiroWidth; column++) {
+
+    for (let column = 0; column < width; column++) {
         html += `<tr>`
-        for (let row = 0; row < tabuleiroHeight; row++) {
-            const pixelIndex = row + column * tabuleiroWidth
-            html += `<td onclick="tabuleiroSelectCase(${pixelIndex})">`
-            html += `<div class="pixel-index">${pixelIndex}</div>`
-            html += tabuleiroArray[pixelIndex]
+        for (let row = 0; row < height; row++) {
+            const index = row + column * width
+            html += `<td onclick="tabuleiroSelectCase(${index})">`
+            html += `<div class="case-index">${index}</div>`
+            html += array[index]
             html += `</td>`
         }
         html += `</tr>`
     }
     html += `</table>`
 
+    console.log("cmd: render;")
     document.querySelector('#display').innerHTML = html
 }
 
+function start() {
+    startSocket()
+    console.log("cmd: start;")
+    setInterval(() => update(currentWebSocket), 1000);
+}
+
+function reset() {
+    console.log("cmd: reset;")
+    currentWebSocket.send(JSON.stringify({gameId: gameId, emit: 'reset'}));
+}
+
 function tabuleiroSelectCase(index) {
-    currentWebSocket.send(JSON.stringify({emit: 'select-case', index: index}));
+    console.log(`cmd: select-case(${index})`)
+    currentWebSocket.send(JSON.stringify({gameId: gameId, emit: 'select-case', index: index}));
 }
 
 function headerChanger(string) {
+    console.log(`cmd: header(${string})`)
     document.querySelector('#header').innerHTML = string
 }
 
 function update(socket) {
-    console.log("Run")
     if (connected) {
-        socket.send(JSON.stringify({emit: 'get-tabuleiro'}));
+        socket.send(JSON.stringify({gameId: gameId, emit: 'get-tabuleiro'}));
+    }
+}
+
+function criarTabuleiro() {
+    if (connected) {
+        currentWebSocket.send(JSON.stringify({
+            gameId: 0, emit: 'create-game'
+        }));
+        newGame = true
+    }
+}
+
+function conectarTabuleiro() {
+    let gameId = document.getElementById("gameId").value;
+    if (connected) {
+        currentWebSocket.send(JSON.stringify({
+            gameId: gameId, emit: 'connect-game'
+        }));
+        newGame = true
     }
 }
 
 let startSocket = function() {
-    playerId = null;
-    const ws = new WebSocket('ws://179.182.211.76:8080'); 
+    gameId = null;
+    const ws = new WebSocket('ws://jogo-da-velha-server.habbora.com.br:8080');
 
     ws.addEventListener("open", event => {
         console.log('open');
@@ -60,9 +81,11 @@ let startSocket = function() {
 
     ws.addEventListener("message", event => {
         let command = JSON.parse(event.data);
-        tabuleiroArray = command.tabuleiroArray;
+        gameId = command.gameId
+        tabuleiroRender(command.tabuleiroArray, command.tabuleiroWidth, command.tabuleiroHeight)
         headerChanger(command.msgHeader)
-        tabuleiroRender();
+        if (newGame) document.getElementById("gameId").value = gameId;
+        newGame = false
     });
 
     ws.addEventListener("close", event => {

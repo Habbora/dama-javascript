@@ -29,7 +29,7 @@
         position: relative;
     }
     
-    .pixel-index {
+    .case-index {
         font-size: 10px;
         display: inline-block;
         position: absolute;
@@ -42,6 +42,17 @@
         max-height: fit-content;
     }
     
+    .box {
+        padding: 10px 0px 10px 0px;
+        margin-bottom: 10px;
+        border: 1px solid #000;
+        text-align: center;
+        vertical-align: center;
+        font-family: monospace;
+        font-size: 20px;
+        position: relative;
+    }
+
     #header {
         height: 25px;
         padding: 10px 0px 10px 0px;
@@ -67,6 +78,18 @@
         padding: 0;
         justify-content: center;
         align-items: center;
+    }
+
+    .box {
+        height: 25px;
+        padding: 10px 0px 10px 0px;
+        margin-bottom: 10px;
+        border: 1px solid #000;
+        text-align: center;
+        vertical-align: center;
+        font-family: monospace;
+        font-size: 20px;
+        position: relative;
     }
     
     #header {
@@ -100,7 +123,7 @@
         position: relative;
     }
     
-    .pixel-index {
+    .case-index {
         font-size: 10px;
         display: inline-block;
         position: absolute;
