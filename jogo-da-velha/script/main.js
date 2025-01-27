@@ -61,6 +61,7 @@ function criarTabuleiro() {
 
 function conectarTabuleiro() {
     let gameId = document.getElementById("gameId").value;
+    
     if (connected) {
         currentWebSocket.send(JSON.stringify({
             gameId: gameId, emit: 'connect-game'
@@ -69,12 +70,11 @@ function conectarTabuleiro() {
     }
 }
 
-let startSocket = function() {
-    gameId = null;
-    const ws = new WebSocket('ws://ip.habbora.com.br:8080');
+const ws = new WebSocket("ws://ip.habbora.com.br:4000");
 
+let startSocket = function() {
     ws.addEventListener("open", event => {
-        console.log('open');
+        console.log('Conectado');
         currentWebSocket = ws;
         connected = true
     });
@@ -98,7 +98,6 @@ let startSocket = function() {
         connected = false
         startSocket();
     });
-
 }
 
-start()
+start();
