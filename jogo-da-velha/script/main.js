@@ -70,7 +70,7 @@ function conectarTabuleiro() {
     }
 }
 
-const ws = new WebSocket("ws://ip.habbora.com.br:4000");
+const ws = new WebSocket("ws://ip.habbora.com.br:3002");
 
 let startSocket = function() {
     ws.addEventListener("open", event => {
